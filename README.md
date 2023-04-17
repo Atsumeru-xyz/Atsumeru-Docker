@@ -38,7 +38,7 @@ docker logs atsumeru
 ## Versioning
 
 For the versions available, see the 
-[tags on this repository](https://hub.docker.com/repository/docker/olegenot/atsumeru/tags). 
+[tags on this repository](https://hub.docker.com/r/olegenot/atsumeru/tags). 
 
 ## Acknowledgments
 
