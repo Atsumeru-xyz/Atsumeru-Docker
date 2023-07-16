@@ -8,7 +8,8 @@ RUN curl -s https://api.github.com/repos/AtsumeruDev/Atsumeru/releases/latest | 
 
 CMD ["java","-jar","Atsumeru.jar"]
 
-EXPOSE 31337
+EXPOSE 8080
 LABEL org.opencontainers.image.source="https://github.com/AtsumeruDev"
 LABEL version="1.0.0"
+LABEL platform="amd64"
 LABEL description="Free self-hosted mangas/comics/light novels media server"
