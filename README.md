@@ -4,7 +4,8 @@
 
 In order to run this container you'll need [docker](https://docs.docker.com/desktop/install/linux-install/) installed.
 
-* [Linux-AMD64](https://hub.docker.com/repository/docker/olegenot/atsumeru)
+* [Linux-AMD64](https://hub.docker.com/r/olegenot/atsumeru)
+* [Linux-arm64v8](https://hub.docker.com/r/olegenot/atsumeru-arm64v8)
 
 ### Usage
 
