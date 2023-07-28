@@ -9,6 +9,8 @@ RUN curl -s https://api.github.com/repos/AtsumeruDev/Atsumeru/releases/latest | 
 CMD ["java","-jar","Atsumeru.jar"]
 
 EXPOSE 8080
+HEALTHCHECK --interval=1m --timeout=5s --retries=3 --start-period=1m CMD curl -o /dev/null -s -w "%{http_code}\n" http://localhost:8080/api/server/ping | grep -qE "^[4]" || echo "Atsumeru , blyat, upal!" && exit 1
+
 LABEL org.opencontainers.image.source="https://github.com/AtsumeruDev"
 LABEL version="1.0.0"
 LABEL platform="arm64v8"
