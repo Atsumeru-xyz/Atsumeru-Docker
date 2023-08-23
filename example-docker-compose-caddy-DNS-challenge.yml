@@ -1,0 +1,36 @@
+version: '3.3'
+
+networks:
+  atsumeru-net:
+    driver: bridge
+
+services:
+    atsumeru:
+        container_name: atsumeru
+        volumes:
+            - '/path/to/you/library:/library'
+            - '/path/to/atsumeru/config:/app/config'
+            - '/path/to/atsumeru/db:/app/database'
+            - '/path/to/atsumeru/cache:/app/cache'
+            - '/path/to/atsumeru/logs:/app/logs'
+        restart: unless-stopped
+        image: 'atsumerudev/atsumeru:latest'
+        networks:
+            - atsumeru-net
+    caddy:
+        container_name: caddy
+        image: caddy:latest
+        restart: unless-stopped
+        ports:
+            - "80:80"
+            - "443:443"
+            - "443:443/udp"
+        volumes:
+            - '/path/to/you/binary/caddy:/usr/bin/caddy'  # Your custom build of Caddy.
+            - '/path/to/you/Caddyfile:/etc/caddy/Caddyfile:ro'
+        networks:
+            - atsumeru-net
+        environment:
+            DOMAIN: "https://atsumeru.example.com"     # Your domain.
+            EMAIL: "admin@example.com"                 # The email address to use for ACME registration.
+            DUCKDNS_TOKEN: "<token>"                   # Your Duck DNS token.

@@ -1,0 +1,9 @@
+{$DOMAIN}:443 {
+
+  # Use the ACME DNS-01 challenge to get a cert for the configured domain.
+  tls {
+    dns duckdns {$DUCKDNS_TOKEN}
+  }
+
+  reverse_proxy atsumeru:31337
+}

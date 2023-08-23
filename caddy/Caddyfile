@@ -1,0 +1,6 @@
+{$DOMAIN}:443 {
+  tls {$EMAIL}
+  reverse_proxy atsumeru:31337 {
+       header_up X-Real-IP {remote_host}
+  }
+}
