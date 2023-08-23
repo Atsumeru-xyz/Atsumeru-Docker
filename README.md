@@ -7,25 +7,38 @@ In order to run this container you'll need [docker](https://docs.docker.com/engi
 * [linux/amd64,linux/arm64/v8,linux/arm/v7](https://hub.docker.com/r/atsumerudev/atsumeru)
 
 ### Usage
-
-#### Container run
+#
+#### Docker run
 
 ```shell
 docker run -d --name=atsumeru -p 31337:31337 -v /path/to/you/library:/library -v /path/to/atsumeru/config:/app/config -v /path/to/atsumeru/db:/app/database -v /path/to/atsumeru/cache:/app/cache -v /path/to/atsumeru/logs:/app/logs --restart unless-stopped atsumerudev/atsumeru:latest
 ```
+
+#
+#### Or another way, Docker-compose
+
+```shell
+curl https://raw.githubusercontent.com/OlegEnot/atsu-docker/master/docker-compose.yml --output docker-compose.yml
+```
+#### ```ATTENTION!``` Fix directories in ```docker-compose.yml``` file, after:
+
+```shell
+docker-compose up
+```
+#
 #### Look at the Administrator's password for authorization on the server through the [application](https://github.com/AtsumeruDev/AtsumeruManager).
 #### And don't forget to change it!
 
 ```shell
 docker logs atsumeru
 ```
-
+#
 #### Volumes
 
 * `/path/to/you/library:/library` - storage location for your content files.
 * `/path/to/atsumeru/db:/app/database` - storage location for the database directory.
 * `/path/to/atsumeru/logs:/app/logs` - storage location for the logs directory (optional).
-
+#
 ## Manual assembly
 
 ```shell
