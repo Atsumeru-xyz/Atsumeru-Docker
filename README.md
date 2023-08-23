@@ -27,7 +27,7 @@ docker run -d \
 #### Or another way, Docker-compose
 
 ```shell
-curl https://raw.githubusercontent.com/OlegEnot/atsu-docker/master/docker-compose.yml --output docker-compose.yml
+curl https://raw.githubusercontent.com/OlegEnot/atsu-docker/master/example-docker-compose.yml --output docker-compose.yml
 ```
 #### ```ATTENTION!``` Fix directories in ```docker-compose.yml``` file, after:
 

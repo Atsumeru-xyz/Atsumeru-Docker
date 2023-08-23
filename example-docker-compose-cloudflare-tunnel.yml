@@ -1,0 +1,31 @@
+version: '3.3'
+
+networks:
+  atsumeru-net:
+    driver: bridge
+
+services:
+    atsumeru:
+        container_name: atsumeru
+        volumes:
+            - '/path/to/you/library:/library'
+            - '/path/to/atsumeru/config:/app/config'
+            - '/path/to/atsumeru/db:/app/database'
+            - '/path/to/atsumeru/cache:/app/cache'
+            - '/path/to/atsumeru/logs:/app/logs'
+        restart: unless-stopped
+        image: 'atsumerudev/atsumeru:latest'
+        networks:
+            - atsumeru-net
+
+    cloudflare-tunnel:
+        image: cloudflare/cloudflared
+        container_name: cloudflare-tunnel
+        restart: unless-stopped
+        command: tunnel run
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+        environment:
+            TUNNEL_TOKEN: "CLOUDFLARE_TUNNEL_TOKEN"
+        networks:
+            - atsumeru-net
