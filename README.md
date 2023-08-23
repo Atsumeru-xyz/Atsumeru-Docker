@@ -4,7 +4,7 @@
 
 In order to run this container you'll need [docker](https://docs.docker.com/engine/install/) installed.
 
-* [Linux [platform=linux/amd64,linux/arm64/v8,linux/arm/v7]](https://hub.docker.com/r/atsumerudev/atsumeru)
+* [linux/amd64,linux/arm64/v8,linux/arm/v7](https://hub.docker.com/r/atsumerudev/atsumeru)
 
 ### Usage
 
@@ -29,7 +29,7 @@ docker logs atsumeru
 ## Manual assembly
 
 ```shell
-
+curl https://raw.githubusercontent.com/OlegEnot/atsu-docker/master/Dockerfile --output Dockerfile
 ```
 
 ```shell
