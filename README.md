@@ -4,15 +4,14 @@
 
 In order to run this container you'll need [docker](https://docs.docker.com/engine/install/) installed.
 
-* [Linux-AMD64](https://hub.docker.com/r/olegenot/atsumeru)
-* [Linux-arm64v8](https://hub.docker.com/r/olegenot/atsumeru-arm64v8)
+* [Linux [platform=linux/amd64,linux/arm64/v8,linux/arm/v7]](https://hub.docker.com/r/atsumerudev/atsumeru)
 
 ### Usage
 
 #### Container run
 
 ```shell
-docker run -d --name=atsumeru -p 31337:31337 -v /path/to/you/library:/library -v /path/to/you/db:/app/database -v /path/to/you/logs:/app/logs --restart unless-stopped olegenot/atsumeru:latest
+docker run -d --name=atsumeru -p 31337:31337 -v /path/to/you/library:/library -v /path/to/atsumeru/config:/app/config -v /path/to/atsumeru/db:/app/database -v /path/to/atsumeru/cache:/app/cache -v /path/to/atsumeru/logs:/app/logs --restart unless-stopped atsumerudev/atsumeru:latest
 ```
 #### Look at the Administrator's password for authorization on the server through the [application](https://github.com/AtsumeruDev/AtsumeruManager).
 #### And don't forget to change it!
@@ -24,13 +23,26 @@ docker logs atsumeru
 #### Volumes
 
 * `/path/to/you/library:/library` - storage location for your content files.
-* `/path/to/you/db:/app/database` - storage location for the database directory.
-* `/path/to/you/logs:/app/logs` - storage location for the logs directory (optional).
+* `/path/to/atsumeru/db:/app/database` - storage location for the database directory.
+* `/path/to/atsumeru/logs:/app/logs` - storage location for the logs directory (optional).
+
+## Manual assembly
+
+```shell
+
+```
+
+```shell
+docker buildx create --name atsumeru --platform=linux/amd64,linux/arm64/v8,linux/arm/v7 --use
+```
+
+```shell
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --builder=atsumeru -t atsumeru:latest .
+```
 
 ## Built With
 
-* List the software v1.0.0
-* That are in this container v0.0.1
+* List the software v1.0.2
 
 ## Find Us
 
@@ -39,7 +51,7 @@ docker logs atsumeru
 ## Versioning
 
 For the versions available, see the 
-[tags on this repository](https://hub.docker.com/r/olegenot/atsumeru/tags). 
+[tags on this repository](https://hub.docker.com/r/atsumerudev/atsumeru/tags). 
 
 ## Acknowledgments
 
