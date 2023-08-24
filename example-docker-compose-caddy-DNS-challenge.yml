@@ -6,7 +6,6 @@ networks:
 
 services:
     atsumeru:
-        container_name: atsumeru
         volumes:
             - '/path/to/you/library:/library'
             - '/path/to/atsumeru/config:/app/config'
@@ -18,7 +17,6 @@ services:
         networks:
             - atsumeru-net
     caddy:
-        container_name: caddy
         image: caddy:latest
         restart: unless-stopped
         ports:
@@ -31,6 +29,8 @@ services:
         networks:
             - atsumeru-net
         environment:
-            DOMAIN: "https://atsumeru.example.com"     # Your domain.
+            DOMAIN: "https://atsumeru.duckdns.org"     # Your domain.
             EMAIL: "admin@example.com"                 # The email address to use for ACME registration.
             DUCKDNS_TOKEN: "<token>"                   # Your Duck DNS token.
+        depends_on:
+            - atsumeru

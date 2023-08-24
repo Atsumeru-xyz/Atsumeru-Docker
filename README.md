@@ -15,10 +15,10 @@ docker run -d \
     --name=atsumeru \
     -p 31337:31337 \
     -v /path/to/your/library:/library \
-    -v /path/to/your/config:/app/config \
-    -v /path/to/your/db:/app/database \
-    -v /path/to/your/cache:/app/cache \
-    -v /path/to/your/logs:/app/logs \
+    -v /path/to/atsumeru/config:/app/config \
+    -v /path/to/atsumeru/db:/app/database \
+    -v /path/to/atsumeru/cache:/app/cache \
+    -v /path/to/atsumeru/logs:/app/logs \
     --restart unless-stopped \
     atsumerudev/atsumeru:latest
 ```
@@ -71,7 +71,6 @@ networks:
 
 services:
     atsumeru:
-        container_name: atsumeru
         volumes:
             - '/path/to/you/library:/library'
             - '/path/to/atsumeru/config:/app/config'
@@ -83,7 +82,6 @@ services:
         networks:
             - atsumeru-net
     caddy:
-        container_name: caddy
         image: caddy:latest
         restart: unless-stopped
         ports:
@@ -97,6 +95,8 @@ services:
         environment:
             DOMAIN: "https://atsumeru.example.com"     # Your domain.
             EMAIL: "admin@example.com"                 # The email address to use for ACME registration.
+        depends_on:
+            - atsumeru
 ```
 
 In the same directory, create the `Caddyfile` below. (This file does not need to be modified.)
@@ -119,6 +119,55 @@ to create and start the containers. A private network for the services in this `
 docker compose down  # or `docker-compose down` if using standalone Docker Compose
 ```
 stops and destroys the containers.
+#
+
+## Cloudflare Tunnel
+
+[Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) provides you with a secure way to connect your resources to Cloudflare without a publicly routable IP address.
+
+To set up a Cloudflare Tunnel for your app, you can follow the instructions in this guide: Creating a Tunnel through the Cloudflare Dashboard. Navigate to `one.dash.cloudflare.com > Access > Tunnels` and click the "Create" button.
+
+When prompted, specify the hostname as http://atsumeru:31337. The web refers to the service named web in our `docker-compose.yml` file.
+
+![Tunnel config](https://i.imgur.com/scX67ID.jpeg)
+
+Once the tunnel is created, click the "Configure" button and scroll down to find the Tunnel token. Copy this token as you will need it in the next step.
+
+Now that you've created the tunnel, set up on your server side. Create a `docker-compose.yml` file and add your token:
+
+```yaml
+version: '3.3'
+
+networks:
+  atsumeru-net:
+    driver: bridge
+
+services:
+    atsumeru:
+        volumes:
+            - '/path/to/you/library:/library'
+            - '/path/to/atsumeru/config:/app/config'
+            - '/path/to/atsumeru/db:/app/database'
+            - '/path/to/atsumeru/cache:/app/cache'
+            - '/path/to/atsumeru/logs:/app/logs'
+        restart: unless-stopped
+        image: 'atsumerudev/atsumeru:latest'
+        networks:
+            - atsumeru-net
+
+    cloudflare-tunnel:
+        image: cloudflare/cloudflared
+        restart: unless-stopped
+        command: 'tunnel --no-autoupdate run --token'
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+        networks:
+            - atsumeru-net
+        environment:
+            TUNNEL_TOKEN: "<token>"
+        depends_on:
+            - atsumeru
+```
 
 ## Caddy with DNS challenge
 
@@ -139,7 +188,6 @@ networks:
 
 services:
     atsumeru:
-        container_name: atsumeru
         volumes:
             - '/path/to/you/library:/library'
             - '/path/to/atsumeru/config:/app/config'
@@ -151,7 +199,6 @@ services:
         networks:
             - atsumeru-net
     caddy:
-        container_name: caddy
         image: caddy:latest
         restart: unless-stopped
         ports:
@@ -164,9 +211,11 @@ services:
         networks:
             - atsumeru-net
         environment:
-            DOMAIN: "https://atsumeru.example.com"     # Your domain.
+            DOMAIN: "https://atsumeru.duckdns.org"     # Your domain.
             EMAIL: "admin@example.com"                 # The email address to use for ACME registration.
             DUCKDNS_TOKEN: "<token>"                   # Your Duck DNS token.
+        depends_on:
+            - atsumeru
 ```
 
 The stock Caddy builds (including the one in the Docker image) don't include the DNS challenge modules, so next you'll need to [download Caddy custom build](https://caddyserver.com/download), search for `duckdns`. Rename the custom build as `caddy` and move it under the same directory as `docker-compose.yml`. Make sure the `caddy` file is executable (e.g., `chmod a+x caddy`). The `docker-compose.yml` file above bind-mounts the custom build into the `caddy:2` container, replacing the stock build.

@@ -6,7 +6,6 @@ networks:
 
 services:
     atsumeru:
-        container_name: atsumeru
         volumes:
             - '/path/to/you/library:/library'
             - '/path/to/atsumeru/config:/app/config'
@@ -20,12 +19,13 @@ services:
 
     cloudflare-tunnel:
         image: cloudflare/cloudflared
-        container_name: cloudflare-tunnel
         restart: unless-stopped
-        command: tunnel run
+        command: 'tunnel --no-autoupdate run --token'
         volumes:
             - /etc/localtime:/etc/localtime:ro
-        environment:
-            TUNNEL_TOKEN: "CLOUDFLARE_TUNNEL_TOKEN"
         networks:
             - atsumeru-net
+        environment:
+            TUNNEL_TOKEN: "<token>"
+        depends_on:
+            - atsumeru
