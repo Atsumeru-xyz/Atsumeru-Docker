@@ -264,16 +264,55 @@ Create a file named `Caddyfile` with the following content:
     reverse_proxy atsumeru:31337
 }
 ```
-You should now be able to reach your atsumeru instance at https://atsumeru.example.com.
 
 **Important:** If necessary, in some routers an exception must be set for the domain (e.g., `atsumeru.example.com`) due to DNS rebind protection.
-#
 
-As with the HTTP challenge example, run
+The stock Caddy builds (including the one in the Docker image) don't include the DNS challenge modules, so next you'll need to [download Caddy custom build](https://caddyserver.com/download), search for `cloudflare`. Rename the custom build as `caddy` and move it under the same directory as `docker-compose.yml`. Make sure the `caddy` file is executable (e.g., `chmod a+x caddy`). The `docker-compose.yml` file above bind-mounts the custom build into the `caddy:2` container, replacing the stock build.
+
+```yaml
+version: '3.3'
+
+networks:
+  atsumeru-net:
+    driver: bridge
+
+services:
+    atsumeru:
+        volumes:
+            - '/path/to/you/library:/library'
+            - '/path/to/atsumeru/config:/app/config'
+            - '/path/to/atsumeru/db:/app/database'
+            - '/path/to/atsumeru/cache:/app/cache'
+            - '/path/to/atsumeru/logs:/app/logs'
+        restart: unless-stopped
+        image: 'atsumerudev/atsumeru:latest'
+        networks:
+            - atsumeru-net
+    caddy:
+        image: caddy:latest
+        restart: unless-stopped
+        ports:
+            - "80:80"
+            - "443:443"
+            - "443:443/udp"
+        volumes:
+            - '/path/to/you/binary/caddy:/usr/bin/caddy'  # Your custom build of Caddy.
+            - '/path/to/you/Caddyfile:/etc/caddy/Caddyfile:ro'
+        networks:
+            - atsumeru-net
+        environment:
+            DOMAIN: "https://atsumeru.example.com"     # Your domain.
+            CLOUDFLARE_API_TOKEN: "<token>"            # Your cloudflare token.
+        depends_on:
+            - atsumeru
+```
+
+As with the HTTP challenge example, run to create and start the containers.
 ```bash
 docker compose up -d  # or `docker-compose up -d` if using standalone Docker Compose
 ```
-to create and start the containers.
+
+You should now be able to reach your atsumeru instance at https://atsumeru.example.com.
 #
 ## Manual assembly
 
