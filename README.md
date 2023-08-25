@@ -158,7 +158,7 @@ services:
     cloudflare-tunnel:
         image: cloudflare/cloudflared
         restart: unless-stopped
-        command: 'tunnel --no-autoupdate run --token'
+        command: 'tunnel --no-autoupdate run'
         volumes:
             - /etc/localtime:/etc/localtime:ro
         networks:
