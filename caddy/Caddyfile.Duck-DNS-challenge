@@ -5,5 +5,7 @@
     dns duckdns {$DUCKDNS_TOKEN}
   }
 
-  reverse_proxy atsumeru:31337
+  reverse_proxy atsumeru:31337 {
+    header_up X-Forwarded-For {remote_host}
+  }
 }

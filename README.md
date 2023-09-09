@@ -104,7 +104,7 @@ In the same directory, create the `Caddyfile` below. (This file does not need to
 {$DOMAIN}:443 {
   tls {$EMAIL}
   reverse_proxy atsumeru:31337 {
-       header_up X-Real-IP {remote_host}
+       header_up X-Forwarded-For {remote_host}
   }
 }
 ```
@@ -226,12 +226,13 @@ In the same directory, create the `Caddyfile` below. (This file does not need to
 ```
 {$DOMAIN}:443 {
 
-  # Use the ACME DNS-01 challenge to get a cert for the configured domain.
   tls {
     dns duckdns {$DUCKDNS_TOKEN}
   }
 
-  reverse_proxy atsumeru:31337
+  reverse_proxy atsumeru:31337 {
+    header_up X-Forwarded-For {remote_host}
+  }
 }
 ```
 
@@ -258,10 +259,10 @@ Your token list should look like:
 Create a file named `Caddyfile` with the following content:
 ```
 {$DOMAIN}:443 {
-    tls {
-        dns cloudflare {$CLOUDFLARE_API_TOKEN}
-    }
-    reverse_proxy atsumeru:31337
+  tls {$EMAIL}
+  reverse_proxy atsumeru:31337 {
+       header_up X-Forwarded-For {remote_host}
+  }
 }
 ```
 
