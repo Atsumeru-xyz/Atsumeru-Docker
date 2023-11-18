@@ -11,5 +11,5 @@ CMD ["java","-Dserver.port=31337","-jar","Atsumeru.jar"]
 EXPOSE 31337
 
 LABEL org.opencontainers.image.source="https://github.com/AtsumeruDev"
-LABEL version="1.0.2"
+LABEL version="1.0.3"
 LABEL description="Free self-hosted mangas/comics/light novels media server"
