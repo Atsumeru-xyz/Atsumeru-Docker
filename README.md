@@ -320,6 +320,13 @@ You should now be able to reach your atsumeru instance at https://atsumeru.examp
 ```shell
 curl https://raw.githubusercontent.com/OlegEnot/atsu-docker/master/Dockerfile --output Dockerfile
 ```
+Or assembly from source:
+
+```shell
+curl https://raw.githubusercontent.com/OlegEnot/atsu-docker/master/Dockerfile-build --output Dockerfile
+```
+
+#
 
 ```shell
 docker buildx create --name atsumeru --platform=linux/amd64,linux/arm64/v8,linux/arm/v7 --use
@@ -331,7 +338,7 @@ docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --builder=at
 
 ## Built With
 
-* List the software v1.0.2
+* List the software v1.0.3
 
 ## Find Us
 
