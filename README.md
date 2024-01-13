@@ -52,8 +52,11 @@ docker logs atsumeru
 
 #
 
-## Running a private Atsumeru instance with Let's Encrypt certs
+### Launching a private Atsumeru instance with Let's Encrypt certificates with a public IP address
+<details>
+  <summary>Atsumeru + Caddy</summary>
 
+#
 This example assumes that you have [installed](https://docs.docker.com/compose/install/) Docker Compose, that you have a domain name (e.g., `atsumeru.example.com`) for your atsumeru instance, and that it will be publicly accessible.
 
 [Docker Compose](https://docs.docker.com/compose/) is a tool that allows the definition and configuration of multi-container applications. In our case, we want both the atsumeru server and a proxy to redirect the WebSocket requests to the correct place.
@@ -120,9 +123,15 @@ docker compose down  # or `docker-compose down` if using standalone Docker Compo
 ```
 stops and destroys the containers.
 #
+</details>
 
-## Cloudflare Tunnel
+#
 
+### Cloudflare Tunnel
+<details>
+  <summary>Atsumeru + Cloudflare Tunnel</summary>
+
+#
 [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) provides you with a secure way to connect your resources to Cloudflare without a publicly routable IP address.
 
 To set up a Cloudflare Tunnel for your app, you can follow the instructions in this guide: Creating a Tunnel through the Cloudflare Dashboard. Navigate to `one.dash.cloudflare.com > Access > Tunnels` and click the "Create" button.
@@ -168,8 +177,16 @@ services:
         depends_on:
             - atsumeru
 ```
+</details>
 
-## Caddy with DNS challenge
+#
+
+### Caddy with DNS challenge
+
+<details>
+  <summary>Atsumeru + Caddy (duckdns or cloudflare)</summary>
+
+#
 
 Two DNS providers are covered:
 * [Duck DNS](https://www.duckdns.org/) -- This gives you a subdomain under `duckdns.org` (e.g., `my-atsumeru.duckdns.org`). This option is simplest if you don't already own a domain.
@@ -314,8 +331,16 @@ docker compose up -d  # or `docker-compose up -d` if using standalone Docker Com
 ```
 
 You should now be able to reach your atsumeru instance at https://atsumeru.example.com.
+
+</details>
+
 #
-## Manual assembly
+
+### Manual assembly
+
+<details>
+  <summary>Manual assembly</summary>
+
 
 ```shell
 curl https://raw.githubusercontent.com/OlegEnot/atsu-docker/master/Dockerfile --output Dockerfile
@@ -335,6 +360,10 @@ docker buildx create --name atsumeru --platform=linux/amd64,linux/arm64/v8,linux
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --builder=atsumeru -t atsumeru:latest .
 ```
+
+</details>
+
+#
 
 ## Built With
 
