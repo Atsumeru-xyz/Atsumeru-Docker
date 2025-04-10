@@ -66,8 +66,6 @@ Docker Compose might be run as `docker-compose <command> ...` (with a dash) or `
 Start by making a new directory and changing into it. Next, create the `docker-compose.yml` below, making sure to substitute appropriate values for the `DOMAIN` and `EMAIL` variables.
 
 ```yaml
-version: '3.3'
-
 networks:
   atsumeru-net:
     driver: bridge
@@ -75,24 +73,24 @@ networks:
 services:
     atsumeru:
         volumes:
-            - '/path/to/you/library:/library'
-            - '/path/to/atsumeru/config:/app/config'
-            - '/path/to/atsumeru/db:/app/database'
-            - '/path/to/atsumeru/cache:/app/cache'
-            - '/path/to/atsumeru/logs:/app/logs'
+            - /path/to/you/library:/library
+            - /path/to/atsumeru/config:/app/config
+            - /path/to/atsumeru/db:/app/database
+            - /path/to/atsumeru/cache:/app/cache
+            - /path/to/atsumeru/logs:/app/logs
         restart: unless-stopped
-        image: 'atsumerudev/atsumeru:latest'
+        image: atsumerudev/atsumeru:latest
         networks:
             - atsumeru-net
     caddy:
         image: caddy:latest
         restart: unless-stopped
         ports:
-            - "80:80"
-            - "443:443"
-            - "443:443/udp"
+            - 80:80
+            - 443:443
+            - 443:443/udp
         volumes:
-            - '/path/to/you/Caddyfile:/etc/caddy/Caddyfile:ro'
+            - /path/to/you/Caddyfile:/etc/caddy/Caddyfile:ro
         networks:
             - atsumeru-net
         environment:
@@ -145,8 +143,6 @@ Once the tunnel is created, click the "Configure" button and scroll down to find
 Now that you've created the tunnel, set up on your server side. Create a `docker-compose.yml` file and add your token:
 
 ```yaml
-version: '3.3'
-
 networks:
   atsumeru-net:
     driver: bridge
@@ -154,13 +150,13 @@ networks:
 services:
     atsumeru:
         volumes:
-            - '/path/to/you/library:/library'
-            - '/path/to/atsumeru/config:/app/config'
-            - '/path/to/atsumeru/db:/app/database'
-            - '/path/to/atsumeru/cache:/app/cache'
-            - '/path/to/atsumeru/logs:/app/logs'
+            - /path/to/you/library:/library
+            - /path/to/atsumeru/config:/app/config
+            - /path/to/atsumeru/db:/app/database
+            - /path/to/atsumeru/cache:/app/cache
+            - /path/to/atsumeru/logs:/app/logs
         restart: unless-stopped
-        image: 'atsumerudev/atsumeru:latest'
+        image: atsumerudev/atsumeru:latest
         networks:
             - atsumeru-net
 
@@ -197,8 +193,6 @@ Two DNS providers are covered:
 Start by making a new directory and changing into it. Next, create the `docker-compose.yml` below, making sure to substitute appropriate values for the `DOMAIN` and `EMAIL` variables.
 
 ```yaml
-version: '3.3'
-
 networks:
   atsumeru-net:
     driver: bridge
@@ -206,25 +200,25 @@ networks:
 services:
     atsumeru:
         volumes:
-            - '/path/to/you/library:/library'
-            - '/path/to/atsumeru/config:/app/config'
-            - '/path/to/atsumeru/db:/app/database'
-            - '/path/to/atsumeru/cache:/app/cache'
-            - '/path/to/atsumeru/logs:/app/logs'
+            - /path/to/you/library:/library
+            - /path/to/atsumeru/config:/app/config
+            - /path/to/atsumeru/db:/app/database
+            - /path/to/atsumeru/cache:/app/cache
+            - /path/to/atsumeru/logs:/app/logs
         restart: unless-stopped
-        image: 'atsumerudev/atsumeru:latest'
+        image: atsumerudev/atsumeru:latest
         networks:
             - atsumeru-net
     caddy:
         image: caddy:latest
         restart: unless-stopped
         ports:
-            - "80:80"
-            - "443:443"
-            - "443:443/udp"
+            - 80:80
+            - 443:443
+            - 443:443/udp
         volumes:
-            - '/path/to/you/binary/caddy:/usr/bin/caddy'  # Your custom build of Caddy.
-            - '/path/to/you/Caddyfile:/etc/caddy/Caddyfile:ro'
+            - /path/to/you/binary/caddy:/usr/bin/caddy  # Your custom build of Caddy.
+            - /path/to/you/Caddyfile:/etc/caddy/Caddyfile:ro
         networks:
             - atsumeru-net
         environment:
@@ -288,8 +282,6 @@ Create a file named `Caddyfile` with the following content:
 The stock Caddy builds (including the one in the Docker image) don't include the DNS challenge modules, so next you'll need to [download Caddy custom build](https://caddyserver.com/download), search for `cloudflare`. Rename the custom build as `caddy` and move it under the same directory as `docker-compose.yml`. Make sure the `caddy` file is executable (e.g., `chmod a+x caddy`). The `docker-compose.yml` file above bind-mounts the custom build into the `caddy:2` container, replacing the stock build.
 
 ```yaml
-version: '3.3'
-
 networks:
   atsumeru-net:
     driver: bridge
@@ -297,30 +289,30 @@ networks:
 services:
     atsumeru:
         volumes:
-            - '/path/to/you/library:/library'
-            - '/path/to/atsumeru/config:/app/config'
-            - '/path/to/atsumeru/db:/app/database'
-            - '/path/to/atsumeru/cache:/app/cache'
-            - '/path/to/atsumeru/logs:/app/logs'
+            - /path/to/you/library:/library
+            - /path/to/atsumeru/config:/app/config
+            - /path/to/atsumeru/db:/app/database
+            - /path/to/atsumeru/cache:/app/cache
+            - /path/to/atsumeru/logs:/app/logs
         restart: unless-stopped
-        image: 'atsumerudev/atsumeru:latest'
+        image: atsumerudev/atsumeru:latest
         networks:
             - atsumeru-net
     caddy:
         image: caddy:latest
         restart: unless-stopped
         ports:
-            - "80:80"
-            - "443:443"
-            - "443:443/udp"
+            - 80:80
+            - 443:443
+            - 443:443/udp
         volumes:
-            - '/path/to/you/binary/caddy:/usr/bin/caddy'  # Your custom build of Caddy.
-            - '/path/to/you/Caddyfile:/etc/caddy/Caddyfile:ro'
+            - /path/to/you/binary/caddy:/usr/bin/caddy  # Your custom build of Caddy.
+            - /path/to/you/Caddyfile:/etc/caddy/Caddyfile:ro
         networks:
             - atsumeru-net
         environment:
-            DOMAIN: "https://atsumeru.example.com"     # Your domain.
-            CLOUDFLARE_API_TOKEN: "<token>"            # Your cloudflare token.
+            DOMAIN: https://atsumeru.example.com     # Your domain.
+            CLOUDFLARE_API_TOKEN: <token>            # Your cloudflare token.
         depends_on:
             - atsumeru
 ```
@@ -343,12 +335,12 @@ You should now be able to reach your atsumeru instance at https://atsumeru.examp
 
 
 ```shell
-curl https://raw.githubusercontent.com/OlegEnot/atsu-docker/master/Dockerfile --output Dockerfile
+curl https://raw.githubusercontent.com/Atsumeru-xyz/Atsumeru-Docker/master/Dockerfile --output Dockerfile
 ```
 Or assembly from source:
 
 ```shell
-curl https://raw.githubusercontent.com/OlegEnot/atsu-docker/master/Dockerfile-build --output Dockerfile
+curl https://raw.githubusercontent.com/Atsumeru-xyz/Atsumeru-Docker/master/Dockerfile-build --output Dockerfile
 ```
 
 #
